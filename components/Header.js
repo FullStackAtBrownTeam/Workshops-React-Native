@@ -12,12 +12,10 @@ export default function Header(props) {
 const styles = StyleSheet.create({
     header: {
         alignItems: "center",
-        backgroundColor: "#A0522D",
-        height: 50,
     },
     text: {
-        color: "white",
         fontSize: 30,
-        paddingTop: 10,
+        paddingTop: 20,
+        paddingBottom: 20
     }
 });
