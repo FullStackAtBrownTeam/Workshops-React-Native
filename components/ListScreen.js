@@ -29,14 +29,10 @@ class ListScreen extends Component {
     }
 
     toggleDone(num) {
-        console.log("toggling done for " + num);
         const newItems = this.state.items.map((item, i) => {
-            if (i === num) {
-                item.isDone = !item.isDone;
-            }
+            if (i === num) { item.isDone = !item.isDone; }
             return item;
         });
-        console.log(newItems);
         this.setState({items: newItems});
     }
 
@@ -67,17 +63,23 @@ class ListScreen extends Component {
         return (
             <View style={styles.container}>
                 <Header title="To Do List" />
+                <View style={styles.textInputContainer}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Add Item"
+                        value={this.state.inputText}
+                        onChangeText={text => this.setState({ inputText: text })}
+                        onSubmitEditing={() => this.addTaskItem(this.state.inputText)}
+                    />
+                    <Button
+                        onPress={() => this.addTaskItem(this.state.inputText)}
+                        title="Add Task"
+                    />
+                </View>
                 <Button
                     onPress={() => this.onToggleShow()}
                     title={this.state.showDoneTitle}
                     style={styles.button}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Add Item"
-                    value={this.state.inputText}
-                    onChangeText={text => this.setState({ inputText: text })}
-                    onSubmitEditing={() => this.addTaskItem(this.state.inputText)}
                 />
                 <ScrollView style={styles.itemContainer}>
                     {this.renderItems()}
@@ -92,9 +94,13 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 45
     },
-    textInput: {
+    textInputContainer: {
         flexDirection: "row",
         alignItems: "center",
+        marginHorizontal: 10
+    },
+    textInput: {
+        flex: 1,
         borderColor: "#cccccc",
         borderWidth: 3,
         paddingVertical: 5,
@@ -103,10 +109,12 @@ const styles = StyleSheet.create({
         color: "#666666",
         margin: 10
     },
+    submitButton: {
+        marginHorizontal: 5,
+    },
     itemContainer: {
         flex: 1,
         flexDirection: "column"
-        // justifyContent: "flex-start"
     }
 });
 

@@ -11,9 +11,6 @@ export default function ListItem(props) {
         props.toggleDone(props.num)
     }
 
-    console.log("rendering " + props.text);
-    console.log(props);
-
     return(
         <View style={[styles.container, isDone ? styles.isDoneContainer : styles.isNotDoneContainer]}>
             <Text style={[styles.itemText, isDone ? styles.isDoneText : styles.isNotDoneText]}>{props.text}</Text>
