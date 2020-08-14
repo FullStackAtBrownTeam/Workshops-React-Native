@@ -9,54 +9,60 @@ class ListScreen extends Component {
         super(props);
         this.state = {
             items: [],
-            isDone: [],
-            inputText: null,
+            inputText: "",
             showDone: true,
-            showDoneTitle: "Hide Done",
-            key: 0,
+            showDoneTitle: "Hide Done Tasks"
         };
     }
 
     addTaskItem(taskName) {
         if (this.state.inputText !== "") {
-            let isDoneUpdate = this.state.isDone;
-            isDoneUpdate.push(false);
+            const newTask = {
+                name: taskName,
+                isDone: false
+            }
             this.setState({
-                isDone: isDoneUpdate,
-                items: this.state.items.concat(
-                    <ListItem text={taskName} toggleDone={(num) => this.toggleDone(num)} isDone={false} key={this.state.key} num={this.state.key} />
-                ),
-                inputText: "",
-                key: this.state.key + 1
+                items: this.state.items.concat(newTask),
+                inputText: ""
             });
         }
     }
 
     toggleDone(num) {
-        let isDoneUpdate = this.state.isDone
-        isDoneUpdate[num] = isDoneUpdate[num] ? false : true;
-        this.setState({ isDone: isDoneUpdate })
+        console.log("toggling done for " + num);
+        const newItems = this.state.items.map((item, i) => {
+            if (i === num) {
+                item.isDone = !item.isDone;
+            }
+            return item;
+        });
+        console.log(newItems);
+        this.setState({items: newItems});
     }
 
     renderItems() {
-        let items = this.state.items;
-        let isDone = this.state.isDone;
-        let shortenedList = [];
+        let res = this.state.items;
         if (!this.state.showDone) {
-            items.forEach(function (item, index) {
-                if (!isDone[index]) { shortenedList.push(item) }
-            });
-            return shortenedList;
+            res = res.filter(item => !item.isDone);
+            console.log("filtering");
+            console.log(res);
         }
-        return this.state.items;
+        return res.map((item, i) => 
+            <ListItem 
+                text={item.name} 
+                toggleDone={() => this.toggleDone(i)} 
+                isDone={item.isDone} 
+                key={i}
+                />
+        );
     }
 
-    onButtonPress() {
+    onToggleShow() {
         this.setState({showDone: !this.state.showDone})
         if (this.state.showDone) {
-            this.setState({showDoneTitle: "Show Done"})
+            this.setState({showDoneTitle: "Show Done Tasks"})
         } else {
-            this.setState({showDoneTitle: "Hide Done"})
+            this.setState({showDoneTitle: "Hide Done Tasks"})
         }
 
     }
@@ -66,7 +72,7 @@ class ListScreen extends Component {
             <View style={styles.container}>
                 <Header title="To Do List" />
                 <Button
-                    onPress={() => this.onButtonPress()}
+                    onPress={() => this.onToggleShow()}
                     title={this.state.showDoneTitle}
                     style={styles.button}
                 />

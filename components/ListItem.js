@@ -4,16 +4,19 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default function ListItem(props) {
 
     // State variable that tracks if this to-do item is marked as done
-    const [isDone, setIsDone] = useState(props.isDone ? true : false);
+    const [isDone, setIsDone] = useState(props.isDone ? props.isDone : false);
 
     const handleDone = () => {
         setIsDone(!isDone);
         props.toggleDone(props.num)
     }
 
+    console.log("rendering " + props.text);
+    console.log(props);
+
     return(
-        <View style={[styles.container, isDone ? styles.isDoneContainer : undefined]}>
-            <Text style={[styles.itemText, isDone ? styles.isDoneText : undefined]}>{props.text}</Text>
+        <View style={[styles.container, isDone ? styles.isDoneContainer : styles.isNotDoneContainer]}>
+            <Text style={[styles.itemText, isDone ? styles.isDoneText : styles.isNotDoneText]}>{props.text}</Text>
             <Button
                 onPress={() => handleDone()}
                 title={isDone ? "Mark Incomplete" : "Mark Done"}
@@ -33,8 +36,6 @@ const styles = StyleSheet.create({
         paddingRight: '5%',
         paddingTop: '3%',
         paddingBottom: '3%',
-
-        backgroundColor: '#e9e9e9'
     },
     itemText: {
         marginLeft: '3%',
@@ -42,13 +43,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         flex: 1,
         flexWrap: 'wrap',
-
-        color: '#000000'
     },
     isDoneContainer: {
         backgroundColor: '#ffffff'
     },
     isDoneText: {
         color: '#cccccc'
+    },
+    isNotDoneContainer: {
+        backgroundColor: '#e9e9e9'
+    },
+    isNotDoneText: {
+        color: '#000000'
     }
 });
