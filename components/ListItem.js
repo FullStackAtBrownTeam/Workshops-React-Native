@@ -4,14 +4,19 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default function ListItem(props) {
 
     // State variable that tracks if this to-do item is marked as done
-    const [isDone, setIsDone] = useState(props.isDone? props.isDone : false);
+    const [isDone, setIsDone] = useState(props.isDone ? true : false);
+
+    const handleDone = () => {
+        setIsDone(!isDone);
+        props.toggleDone(props.num)
+    }
 
     return(
-        <View style={[styles.container, isDone? styles.isDoneContainer : undefined]}>
-            <Text style={[styles.itemText, isDone? styles.isDoneText : undefined]}>{props.text}</Text>
+        <View style={[styles.container, isDone ? styles.isDoneContainer : undefined]}>
+            <Text style={[styles.itemText, isDone ? styles.isDoneText : undefined]}>{props.text}</Text>
             <Button
-                onPress={() => setIsDone(!isDone)}
-                title={isDone? "Mark Undone" : "Mark Done"}
+                onPress={() => handleDone()}
+                title={isDone ? "Mark Incomplete" : "Mark Done"}
             />
         </View>
     );

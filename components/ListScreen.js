@@ -2,68 +2,79 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, TextInput, Button } from 'react-native';
 import Header from './Header';
 import ListItem from './ListItem'
-import { useState, useEffect } from "react";
 
 class ListScreen extends Component {
-    // const [inputText, setText] = useState("");
-    // const [items, setItems] = useState([]);
 
     constructor(props) {
         super(props);
         this.state = {
             items: [],
+            isDone: [],
             inputText: null,
-            showDone: true
+            showDone: true,
+            showDoneTitle: "Hide Done",
+            key: 0,
         };
-    }
-
-    setText(text) {
-        this.setState({
-            inputText: text
-        });
     }
 
     addTaskItem(taskName) {
         if (this.state.inputText !== "") {
+            let isDoneUpdate = this.state.isDone;
+            isDoneUpdate.push(false);
             this.setState({
+                isDone: isDoneUpdate,
                 items: this.state.items.concat(
-                    <ListItem text={taskName} isDone={false} />
+                    <ListItem text={taskName} toggleDone={(num) => this.toggleDone(num)} isDone={false} key={this.state.key} num={this.state.key} />
                 ),
-                inputText: ""
+                inputText: "",
+                key: this.state.key + 1
             });
         }
     }
 
-    toggleShowDone() {
-        this.setState({
-            showDone: this.state.showDone
-        });
+    toggleDone(num) {
+        let isDoneUpdate = this.state.isDone
+        isDoneUpdate[num] = isDoneUpdate[num] ? false : true;
+        this.setState({ isDone: isDoneUpdate })
     }
 
     renderItems() {
         let items = this.state.items;
-        if (this.state.hideDone) {
-            items = items.filter(item => {
-                console.log(item.state);
-                item.state.isDone
+        let isDone = this.state.isDone;
+        let shortenedList = [];
+        if (!this.state.showDone) {
+            items.forEach(function (item, index) {
+                if (!isDone[index]) { shortenedList.push(item) }
             });
+            return shortenedList;
         }
         return this.state.items;
+    }
+
+    onButtonPress() {
+        this.setState({showDone: !this.state.showDone})
+        if (this.state.showDone) {
+            this.setState({showDoneTitle: "Show Done"})
+        } else {
+            this.setState({showDoneTitle: "Hide Done"})
+        }
+
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Header title="To Do List" />
-                {/* <Button 
-                    onPress={() => this.toggleShowDone()}
-                    title="Toggle Show Done"
-                /> */}
+                <Button
+                    onPress={() => this.onButtonPress()}
+                    title={this.state.showDoneTitle}
+                    style={styles.button}
+                />
                 <TextInput
                     style={styles.textInput}
                     placeholder="Add Item"
                     value={this.state.inputText}
-                    onChangeText={text => this.setText(text)}
+                    onChangeText={text => this.setState({ inputText: text })}
                     onSubmitEditing={() => this.addTaskItem(this.state.inputText)}
                 />
                 <ScrollView style={styles.itemContainer}>
