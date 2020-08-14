@@ -41,20 +41,16 @@ class ListScreen extends Component {
     }
 
     renderItems() {
-        let res = this.state.items;
-        if (!this.state.showDone) {
-            res = res.filter(item => !item.isDone);
-            console.log("filtering");
-            console.log(res);
-        }
-        return res.map((item, i) => 
-            <ListItem 
-                text={item.name} 
-                toggleDone={() => this.toggleDone(i)} 
-                isDone={item.isDone} 
-                key={i}
-                />
-        );
+        return this.state.items.map((item, i) => {
+            if (this.state.showDone || !item.isDone) {
+                return <ListItem 
+                    text={item.name} 
+                    toggleDone={() => this.toggleDone(i)} 
+                    isDone={item.isDone} 
+                    key={i}
+                    />
+            }
+        });
     }
 
     onToggleShow() {
