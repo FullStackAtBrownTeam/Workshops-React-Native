@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
+/**
+ * This functional component represents a single list item in our to-do list.
+ * @param {*} props Any props that were given to build this component
+ */
 export default function ListItem(props) {
 
     // State variable that tracks if this to-do item is marked as done
     const [isDone, setIsDone] = useState(props.isDone ? props.isDone : false);
 
+    // Function to be called when the "Mark as done" button is pressed
     const handleDone = () => {
         setIsDone(!isDone);
         props.toggleDone(props.num)
     }
 
+    // Rendered component
     return(
         <View style={[styles.container, isDone ? styles.isDoneContainer : styles.isNotDoneContainer]}>
             <Text style={[styles.itemText, isDone ? styles.isDoneText : styles.isNotDoneText]}>{props.text}</Text>
@@ -22,6 +28,7 @@ export default function ListItem(props) {
     );
 }
 
+// Styles for this component
 const styles = StyleSheet.create({
     container: {
         flex: 1,
