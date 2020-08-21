@@ -9,6 +9,11 @@ import ListItem from './ListItem'
  */
 class ListScreen extends Component {
 
+    // Counter for generating unique keys for each list item in our app
+    // NOTE: This could be a state variable, but since updating it doesn't 
+    // require us to re-render the object, we'll keep it as a class variable
+    key = 0;
+
     /**
      * Constructs this component 
      * @param {*} props Any props that were given to build this component
@@ -36,8 +41,10 @@ class ListScreen extends Component {
             // Create object representing the task
             const newTask = {
                 name: taskName,
-                isDone: false
+                isDone: false,
+                key: this.key
             }
+            this.key ++; // Increment our key counter
 
             // Add the new object to the component state, and reset the inputText field
             this.setState({
@@ -54,8 +61,8 @@ class ListScreen extends Component {
     toggleDone(key) {
 
         // Toggle the 'isDone' field of the target to-do object
-        const newItems = this.state.items.map((item, i) => {
-            if (i === key) { item.isDone = !item.isDone; }
+        const newItems = this.state.items.map((item) => {
+            if (item.key === key) { item.isDone = !item.isDone; }
             return item;
         });
 
@@ -70,13 +77,13 @@ class ListScreen extends Component {
 
         // For each to-do object, create a corresponding ListItem element,
         // passing the right props to the component
-        return this.state.items.map((item, i) => {
+        return this.state.items.map((item) => {
             if (this.state.showDone || !item.isDone) {
                 return <ListItem 
                     text={item.name} 
-                    toggleDone={() => this.toggleDone(i)} 
+                    toggleDone={() => this.toggleDone(item.key)} 
                     isDone={item.isDone} 
-                    key={i}
+                    key={item.key}
                     />
             }
         });
