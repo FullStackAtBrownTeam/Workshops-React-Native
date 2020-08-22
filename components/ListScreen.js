@@ -25,7 +25,6 @@ class ListScreen extends Component {
             items: [], // List of objects {name, isDone} representing to-do items
             inputText: "", // The current text in the input field
             showDone: true, // Toggles if completed tasks should be shown
-            showDoneTitle: "Hide Done Tasks" // The text to be shown on the button
         };
     }
 
@@ -36,7 +35,7 @@ class ListScreen extends Component {
     addTaskItem(taskName) {
 
         // If the input field isn't empty
-        if (this.state.inputText !== "") {
+        if (taskName !== "") {
 
             // Create object representing the task
             const newTask = {
@@ -80,21 +79,13 @@ class ListScreen extends Component {
         return this.state.items.map((item) => {
             if (this.state.showDone || !item.isDone) {
                 return <ListItem 
-                    text={item.name} 
+                    title={item.name} 
                     toggleDone={() => this.toggleDone(item.key)} 
                     isDone={item.isDone} 
                     key={item.key}
                     />
             }
         });
-    }
-
-    /**
-     * Toggles the showDone state property between true and false,
-     * to be called when the "toggle" button is pressed
-     */
-    onToggleShow() {
-        this.setState({showDone: !this.state.showDone})
     }
 
     /**
@@ -121,7 +112,7 @@ class ListScreen extends Component {
                 </View>
 
                 <Button
-                    onPress={() => this.onToggleShow()}
+                    onPress={() => this.setState({showDone: !this.state.showDone})}
                     title={this.state.showDone? "Hide Done Tasks" : "Show Done Tasks"}
                     style={styles.button}
                 />
