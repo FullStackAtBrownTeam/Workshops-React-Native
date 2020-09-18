@@ -1,6 +1,6 @@
 # Hack@Home Workshop - React Native
 
-This is the repository for the [Hack@Home](http://hackathome.org/) React Native workshop, led by David Han and Ell Li. The video companion to this repository will be posted [here]()
+This is the repository for the [Hack@Home](http://hackathome.org/) React Native workshop, led by David Han and Ell Li. The video companion to this repository will be posted [here](https://www.youtube.com/watch?v=dD3eXBZt9TE&feature=youtu.be&ab_channel=FSAB).
 
 ## Dev Setup
 
